@@ -93,7 +93,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
     switch (operation) {
       case "push":
         setActiveIndex([arrayList.length])
-        setArrayList((prev: any[]) => [...prev, value]);
+        setArrayList((prev: number[]) => [...prev, value]);
         setTimeout(() => {
           setActiveIndex(null);
         }, EFFECT_SPEED);
@@ -101,19 +101,19 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
       case "pop":
         setActiveIndex([arrayList.length - 1])
         setTimeout(() => {
-          setArrayList((prev: any[]) => prev.slice(0, -1));
+          setArrayList((prev: number[]) => prev.slice(0, -1));
         }, EFFECT_SPEED);
         break;
       case "shift":
         setActiveIndex([0]);
         setTimeout(() => {
-          setArrayList((prev: any[]) => prev.slice(1));
+          setArrayList((prev: number[]) => prev.slice(1));
           setActiveIndex(null)
         }, EFFECT_SPEED);
         break;
       case "unshift":
         setActiveIndex([0]);
-        setArrayList((prev: any[]) => [value, ...prev]);
+        setArrayList((prev: number[]) => [value, ...prev]);
         setTimeout(() => {
           setActiveIndex(null);
         }, EFFECT_SPEED);
@@ -131,7 +131,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
                 return;
               }
               setActiveIndex([i, j]);
-              setArrayList((prev: any[]) => {
+              setArrayList((prev: number[]) => {
                 const newArr = [...prev];
                 [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
                 return newArr;
@@ -152,14 +152,14 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
           const sortOneByOne = () => {
             let i = 0;
             let j = 0;
-            let n = arrayList.length;
+            const n = arrayList.length;
             const step = () => {
               if (i >= n - 1) {
                 setActiveIndex(null);
                 return;
               }
               setActiveIndex([j, j + 1]);
-              setArrayList((prev: any[]) => {
+              setArrayList((prev: number[]) => {
                 const newArr = [...prev];
                 if (newArr[j] > newArr[j + 1]) {
                   [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
@@ -204,12 +204,12 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
       {{
         "push": <div>
           <strong>Push</strong>
-          <p className="text-sm mb-4">This operation allows you to add an element to the end of the array. Enter a number below and click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation allows you to add an element to the end of the array. Enter a number below and click &quot;Run&quot; to perform the operation.</p>
           <InputField setValue={gotValue} />
         </div>,
         "pop": <div>
           <strong>Pop</strong>
-          <p className="text-sm mb-4">This operation removes the last element from the array. Click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation removes the last element from the array. Click &quot;Run&quot; to perform the operation.</p>
           <button
             onClick={() => arrayList.length > 0 ? gotValue("") : (document.querySelector("#push") as HTMLElement)?.click()}
             className={` ${arrayList.length === 0 && " opacity-50"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
@@ -232,7 +232,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         </div>,
         "shift": <div>
           <strong>Shift</strong>
-          <p className="text-sm mb-4">This operation removes the first element from the array. Click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation removes the first element from the array. Click &quot;Run&quot; to perform the operation.</p>
           <button
             onClick={() => gotValue("")}
             className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
@@ -244,12 +244,12 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         </div>,
         "unshift": <div>
           <strong>Unshift</strong>
-          <p className="text-sm mb-4">This operation allows you to add an element to the beginning of the array. Enter a number below and click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation allows you to add an element to the beginning of the array. Enter a number below and click &quot;Run&quot; to perform the operation.</p>
           <InputField setValue={gotValue} />
         </div>,
         "reverse": <div>
           <strong>Reverse</strong>
-          <p className="text-sm mb-4">This operation reverses the order of elements in the array. Click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation reverses the order of elements in the array. Click &quot;Run&quot; to perform the operation.</p>
           <button
             onClick={() => gotValue("")}
             className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
@@ -261,7 +261,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         </div>,
         "sort": <div>
           <strong>Sort</strong>
-          <p className="text-sm mb-4">This operation sorts the elements in the array in ascending order. Click "Run" to perform the operation.</p>
+          <p className="text-sm mb-4">This operation sorts the elements in the array in ascending order. Click &quot;Run&quot; to perform the operation.</p>
           <button
             onClick={() => gotValue("")}
             className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}

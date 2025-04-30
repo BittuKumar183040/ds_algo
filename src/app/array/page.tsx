@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Operations from "./sections/Operations";
 import HBar from "@/components/HBar";
-import Tab from "@/components/Tab";
 import CreateBar from "@/components/CreateBar";
 import { MAXVALUE, INITIAL_ARRAY_SIZE } from "@/config/constant";
 

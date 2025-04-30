@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const Tab = ({onChange}:any) => {
+const Tab = () => {
   
   const [selected, setSelected] = useState<number>(0);
 
