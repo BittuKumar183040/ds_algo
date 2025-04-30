@@ -32,8 +32,8 @@ Includes animated **reverse**, **sort**, **unshift**, and **pop** — perfect fo
 
 ### 1️⃣ Clone the repo
 ```bash
-git clone https://github.com/yourusername/ds-algo-visualizer.git
-cd ds-algo-visualizer
+git clone https://github.com/BittuKumar183040/ds_algo.git
+cd ds_algo
 ```
 
 ### 2️⃣ Install dependencies
