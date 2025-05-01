@@ -67,12 +67,14 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
     { name: "unshift", label: "Unshift" },
     { name: "reverse", label: "Reverse" },
     { name: "sort", label: "Sort" },
+    { name: "traverse", label: "Traverse" },
+    { name: "find", label: "Find" },
   ]
 
   const resetVisual = () => {
     if (animation.current) {
       clearTimeout(animation.current);
-      animation.current=null;
+      animation.current = null;
       return true;
     }
     return false;
@@ -87,99 +89,165 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
     return true;
   };
 
-  const gotValue = (val: string) => {
-    const value = parseInt(val)
+  const traverseOneByOne = (start=0, end=arrayList.length) => {
+    let i = start;
+    const n = end;
+    const step = () => {
+      setActiveIndex([i]);
+      animation.current = setTimeout(() => {
+        i = i + 1;
+        if (i >= n) {
+          return;
+        }
+        step();
+      }, EFFECT_SPEED);
+    };
+    step();
+  };
+
+  const gotValue = (value: string) => {
     resetVisual();
     switch (operation) {
       case "push":
         setActiveIndex([arrayList.length])
-        setArrayList((prev: number[]) => [...prev, value]);
+        setArrayList((prev: number[]) => [...prev, parseInt(value)]);
         setTimeout(() => {
           setActiveIndex(null);
-        }, EFFECT_SPEED);
+        }, EFFECT_SPEED + 100);
         break;
       case "pop":
         setActiveIndex([arrayList.length - 1])
         setTimeout(() => {
           setArrayList((prev: number[]) => prev.slice(0, -1));
-        }, EFFECT_SPEED);
+        }, EFFECT_SPEED + 100);
         break;
       case "shift":
         setActiveIndex([0]);
         setTimeout(() => {
           setArrayList((prev: number[]) => prev.slice(1));
           setActiveIndex(null)
-        }, EFFECT_SPEED);
+        }, EFFECT_SPEED + 100);
         break;
       case "unshift":
         setActiveIndex([0]);
-        setArrayList((prev: number[]) => [value, ...prev]);
+        setArrayList((prev: number[]) => [parseInt(value), ...prev]);
         setTimeout(() => {
           setActiveIndex(null);
-        }, EFFECT_SPEED);
+        }, EFFECT_SPEED + 100);
         break;
-        case "reverse":
-          const reverseOneByOne = () => {
-            let stepCount = 0;
-            const n = arrayList.length;
-        
-            const step = () => {
-              const i = stepCount;
-              const j = n - 1 - stepCount;
-              if (i >= j) {
-                setActiveIndex(null);
-                return;
+      case "reverse":
+        const reverseOneByOne = () => {
+          let stepCount = 0;
+          const n = arrayList.length;
+
+          const step = () => {
+            const i = stepCount;
+            const j = n - 1 - stepCount;
+            if (i >= j) {
+              setActiveIndex(null);
+              return;
+            }
+            setActiveIndex([i, j]);
+            setArrayList((prev: number[]) => {
+              const newArr = [...prev];
+              [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+              return newArr;
+            });
+
+            animation.current = setTimeout(() => {
+              stepCount++;
+              step();
+            }, EFFECT_SPEED);
+          };
+          step();
+        };
+        reverseOneByOne();
+        break;
+
+      case "sort":
+        const sortOneByOne = () => {
+          let i = 0;
+          let j = 0;
+          const n = arrayList.length;
+          const step = () => {
+            if (i >= n - 1) {
+              setActiveIndex(null);
+              return;
+            }
+            setActiveIndex([j, j + 1]);
+            setArrayList((prev: number[]) => {
+              const newArr = [...prev];
+              if (newArr[j] > newArr[j + 1]) {
+                [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
               }
-              setActiveIndex([i, j]);
-              setArrayList((prev: number[]) => {
-                const newArr = [...prev];
-                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-                return newArr;
-              });
-        
-              animation.current = setTimeout(() => {
-                stepCount++;
+              return newArr;
+            });
+            animation.current = setTimeout(() => {
+              j++;
+              if (j >= n - i - 1) {
+                j = 0;
+                i++;
+              }
+              if (!isSorted(arrayList) || i == 0) {
                 step();
-              }, EFFECT_SPEED);
-            };
-            step();
+              }
+            }, EFFECT_SPEED);
           };
-        
-          reverseOneByOne();
-          break;
-        
-        case "sort":
-          const sortOneByOne = () => {
+          step();
+        };
+        sortOneByOne();
+        break;
+      case "traverse":
+        traverseOneByOne();
+        break;
+      case "find":
+        switch(value){
+          case "smallest":
+            {
+              let i = 0;
+              let j = 1;
+              const n = arrayList.length;
+              const step = () => {
+                setActiveIndex([i, j]);
+                animation.current = setTimeout(() => {
+                  if (arrayList[i] < arrayList[j]) {
+                    j=i;
+                  }
+                  if (i < n) {
+                    step();
+                  }else{
+                    setActiveIndex([j]);
+                  }
+                  i++
+                }, EFFECT_SPEED+100);
+              }
+              step();
+            }
+            break;
+          case "largest": {
             let i = 0;
-            let j = 0;
+            let j = 1;
             const n = arrayList.length;
             const step = () => {
-              if (i >= n - 1) {
-                setActiveIndex(null);
-                return;
-              }
-              setActiveIndex([j, j + 1]);
-              setArrayList((prev: number[]) => {
-                const newArr = [...prev];
-                if (newArr[j] > newArr[j + 1]) {
-                  [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
-                }
-                return newArr;
-              });
+              setActiveIndex([i, j]);
               animation.current = setTimeout(() => {
-                j++;
-                if (j >= n - i - 1) {
-                  j = 0;
-                  i++;
+                if (arrayList[i] >= arrayList[j]) {
+                  j=i;
                 }
-                if(!isSorted(arrayList) || i == 0){
+                if (i < n) {
                   step();
+                }else{
+                  setActiveIndex([j]);
                 }
-              }, EFFECT_SPEED);
-            };
+                i++
+              }, EFFECT_SPEED+100);
+            }
             step();
-          };
-          sortOneByOne();
+          }
+            break;
+          default:
+            break;
+        }
         break;
       default:
         break;
@@ -210,37 +278,25 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         "pop": <div>
           <strong>Pop</strong>
           <p className="text-sm mb-4">This operation removes the last element from the array. Click &quot;Run&quot; to perform the operation.</p>
-          <button
-            onClick={() => arrayList.length > 0 ? gotValue("") : (document.querySelector("#push") as HTMLElement)?.click()}
-            className={` ${arrayList.length === 0 && " opacity-50"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
-          >
-            {arrayList.length > 0 ? <p>Pop Element - <span className='text-red-300 font-semibold bg-amber-50 p-2 rounded'>{arrayList[arrayList.length - 1]}</span></p>
-              : <p className=' px-4' title='Nothing to remove'>Push Some Number Please! 🙏 </p>
-            }
-          </button>
-
-          <button
-            onClick={() => setArrayList([])}
-            className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} ml-8 cursor-pointer active:scale-95 p-2 px-5 bg-orange-800 text-white shadow-md rounded-md hover:bg-orange-700 transition-all`}
-          >
-            {arrayList.length > 0 ? <p>Pop All <span className='text-red-300 font-semibold '>({arrayList.length})</span> of them!</p>
-              : <p className=' px-4' title='Nothing to remove'>You Already Did! 🥹</p>
-            }
-          </button>
-          
-
+          <div className=' flex gap-10'>
+            <Button
+              label={<p>Pop Element - <span className='text-red-300 font-semibold bg-amber-50 p-2 rounded'>{arrayList[arrayList.length - 1]}</span></p>}
+              errorLabel={"Push Some Number Please! 🙏"}
+              arrayList={arrayList}
+              onClick={() => arrayList.length > 0 ? gotValue("") : (document.querySelector("#push") as HTMLElement)?.click()}
+            />
+            <Button
+              label={<p>Pop All <span className='text-red-300 font-semibold '>({arrayList.length})</span> of them!</p>}
+              errorLabel={"You Already Removed All 🥹"}
+              arrayList={arrayList}
+              onClick={() => setArrayList([])}
+            />
+          </div>
         </div>,
         "shift": <div>
           <strong>Shift</strong>
           <p className="text-sm mb-4">This operation removes the first element from the array. Click &quot;Run&quot; to perform the operation.</p>
-          <button
-            onClick={() => gotValue("")}
-            className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
-          >
-            {arrayList.length > 0 ? <p> Remove Element - <span className='text-red-300 font-semibold bg-amber-50 p-2 rounded'>{arrayList[0]}</span></p>
-              : <p className=' px-4' title='Nothing to remove'>Found Emply Array</p>
-            }
-          </button>
+          <Button label={<p> Remove Element - <span className='text-red-300 font-semibold bg-amber-50 p-2 rounded'>{arrayList[0]}</span></p>} arrayList={arrayList} onClick={() => gotValue("")} />
         </div>,
         "unshift": <div>
           <strong>Unshift</strong>
@@ -250,33 +306,41 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         "reverse": <div>
           <strong>Reverse</strong>
           <p className="text-sm mb-4">This operation reverses the order of elements in the array. Click &quot;Run&quot; to perform the operation.</p>
-          <button
-            onClick={() => gotValue("")}
-            className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
-          >
-            {arrayList.length > 0 ? <p className=' px-4'>Reverse Array</p>
-              : <p className=' px-4' title='Nothing to reverse'>Found Empty Array</p>
-            }
-          </button>
+          <Button label={"Reverse Array"} arrayList={arrayList} onClick={() => gotValue("")} />
         </div>,
         "sort": <div>
           <strong>Sort</strong>
           <p className="text-sm mb-4">This operation sorts the elements in the array in ascending order. Click &quot;Run&quot; to perform the operation.</p>
-          <button
-            onClick={() => gotValue("")}
-            className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
-          >
-            {arrayList.length > 0 ? <p className=' px-4'>Sort Array</p>
-              : <p className=' px-4' title='Nothing to reverse'>Found Empty Array</p>
-            }
-          </button>
+          <Button label={"Sort Array"} arrayList={arrayList} onClick={() => gotValue("")} />
+        </div>,
+        "traverse": <div>
+          <strong>Traverse</strong>
+          <p className="text-sm mb-4">This operation traverses through the array and highlights each element one by one. Click &quot;Run&quot; to perform the operation.</p>
+          <Button label={"Traverse"} arrayList={arrayList} onClick={() => gotValue("")} />
+        </div>,
+        "find": <div>
+          <strong>Find</strong>
+          <p className="text-sm mb-4">Find element in array using triversal of array.</p>
+          <div className=' flex gap-10'>
+            <Button label={"Smallest"} arrayList={arrayList} onClick={() => gotValue("smallest")} />
+            <Button label={"Largest"} arrayList={arrayList} onClick={() => gotValue("largest")} />
+          </div>
         </div>,
       }[operation]}
-
-
     </section>
 
   )
+}
+
+const Button = ({ label, errorLabel = "Found Empty Array", arrayList, onClick }: any) => {
+  return <button
+    onClick={onClick}
+    className={` ${arrayList.length === 0 && " opacity-50 pointer-events-none"} cursor-pointer active:scale-95 p-2 pr-1 bg-green-800 text-white shadow-md rounded-md hover:bg-green-700 transition-all`}
+  >
+    {arrayList.length > 0 ? <div className=' px-4'>{label}</div>
+      : <div className=' px-4' title='Action not allowed.'>{errorLabel}</div>
+    }
+  </button>
 }
 
 export default Operations
