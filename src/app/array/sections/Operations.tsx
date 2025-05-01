@@ -89,7 +89,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
     return true;
   };
 
-  const traverseOneByOne = (start=0, end=arrayList.length) => {
+  const traverseOneByOne = (start = 0, end = arrayList.length) => {
     let i = start;
     const n = end;
     const step = () => {
@@ -103,6 +103,55 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
       }, EFFECT_SPEED);
     };
     step();
+  };
+
+  const findSmallest = (array: number[]): Promise<{ index: number; value: number }> => {
+    return new Promise((resolve) => {
+      let i = 0;
+      let j = 0; // Start with 0, as index
+      const n = array.length;
+
+      const step = () => {
+        if (i < n) {
+          setActiveIndex([i, j]);
+          animation.current = setTimeout(() => {
+            if (array[i] < array[j]) {
+              j = i;
+            }
+            i++;
+            step();
+          }, EFFECT_SPEED + 100);
+        } else {
+          setActiveIndex([j]);
+          resolve({ index: j, value: array[j] });
+        }
+      };
+
+      step();
+    });
+  };
+  const findLargest = (array: number[]): Promise<{ index: number; value: number }> => {
+    return new Promise((resolve) => {
+      let i = 0;
+      let j = 1;
+      const n = arrayList.length;
+      const step = () => {
+        setActiveIndex([i, j]);
+        animation.current = setTimeout(() => {
+          if (arrayList[i] >= arrayList[j]) {
+            j = i;
+          }
+          if (i < n) {
+            step();
+          } else {
+            setActiveIndex([j]);
+            resolve({ index: j, value: array[j] });
+          }
+          i++
+        }, EFFECT_SPEED + 100);
+      }
+      step();
+    });
   };
 
   const gotValue = (value: string) => {
@@ -165,85 +214,90 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         break;
 
       case "sort":
-        const sortOneByOne = () => {
-          let i = 0;
-          let j = 0;
-          const n = arrayList.length;
-          const step = () => {
-            if (i >= n - 1) {
-              setActiveIndex(null);
-              return;
-            }
-            setActiveIndex([j, j + 1]);
-            setArrayList((prev: number[]) => {
-              const newArr = [...prev];
-              if (newArr[j] > newArr[j + 1]) {
-                [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
-              }
-              return newArr;
-            });
-            animation.current = setTimeout(() => {
-              j++;
-              if (j >= n - i - 1) {
-                j = 0;
-                i++;
-              }
-              if (!isSorted(arrayList) || i == 0) {
-                step();
-              }
-            }, EFFECT_SPEED);
-          };
-          step();
-        };
-        sortOneByOne();
+        switch (value) {
+          case "bubble": {
+            const sortOneByOne = () => {
+              let i = 0;
+              let j = 0;
+              const n = arrayList.length;
+              const step = () => {
+                if (i >= n - 1) {
+                  setActiveIndex(null);
+                  return;
+                }
+                setActiveIndex([j, j + 1]);
+                setArrayList((prev: number[]) => {
+                  const newArr = [...prev];
+                  if (newArr[j] > newArr[j + 1]) {
+                    [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
+                  }
+                  return newArr;
+                });
+                animation.current = setTimeout(() => {
+                  j++;
+                  if (j >= n - i - 1) {
+                    j = 0;
+                    i++;
+                  }
+                  if (!isSorted(arrayList) || i == 0) {
+                    step();
+                  }
+                }, EFFECT_SPEED);
+              };
+              step();
+            };
+            sortOneByOne();
+          }
+            break;
+          case "selection": {
+            const sortOneByOne = () => {
+              let i = 0;
+              let j = 0;
+              const n = arrayList.length;
+              const step = () => {
+                if (i >= n - 1) {
+                  setActiveIndex(null);
+                  return;
+                }
+                setActiveIndex([j, j + 1]);
+                setArrayList((prev: number[]) => {
+                  const newArr = [...prev];
+                  if (newArr[j] > newArr[j + 1]) {
+                    [newArr[j], newArr[j + 1]] = [newArr[j + 1], newArr[j]];
+                  }
+                  return newArr;
+                });
+                animation.current = setTimeout(() => {
+                  j++;
+                  if (j >= n - i - 1) {
+                    j = 0;
+                    i++;
+                  }
+                  if (!isSorted(arrayList) || i == 0) {
+                    step();
+                  }
+                }, EFFECT_SPEED);
+              };
+              step();
+            };
+            sortOneByOne();
+          }
+            break;
+          default:
+            break;
+        }
+
         break;
       case "traverse":
         traverseOneByOne();
         break;
       case "find":
-        switch(value){
+        switch (value) {
           case "smallest":
-            {
-              let i = 0;
-              let j = 1;
-              const n = arrayList.length;
-              const step = () => {
-                setActiveIndex([i, j]);
-                animation.current = setTimeout(() => {
-                  if (arrayList[i] < arrayList[j]) {
-                    j=i;
-                  }
-                  if (i < n) {
-                    step();
-                  }else{
-                    setActiveIndex([j]);
-                  }
-                  i++
-                }, EFFECT_SPEED+100);
-              }
-              step();
-            }
+            findSmallest(arrayList)
             break;
-          case "largest": {
-            let i = 0;
-            let j = 1;
-            const n = arrayList.length;
-            const step = () => {
-              setActiveIndex([i, j]);
-              animation.current = setTimeout(() => {
-                if (arrayList[i] >= arrayList[j]) {
-                  j=i;
-                }
-                if (i < n) {
-                  step();
-                }else{
-                  setActiveIndex([j]);
-                }
-                i++
-              }, EFFECT_SPEED+100);
-            }
-            step();
-          }
+          case "largest":
+            findLargest(arrayList)
             break;
           default:
             break;
@@ -311,7 +365,10 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
         "sort": <div>
           <strong>Sort</strong>
           <p className="text-sm mb-4">This operation sorts the elements in the array in ascending order. Click &quot;Run&quot; to perform the operation.</p>
-          <Button label={"Sort Array"} arrayList={arrayList} onClick={() => gotValue("")} />
+          <div className=' flex gap-10'>
+            <Button label={"Bubble Sort"} arrayList={arrayList} onClick={() => gotValue("bubble")} />
+            <Button label={"Selection Sort"} arrayList={arrayList} onClick={() => gotValue("selection")} />
+          </div>
         </div>,
         "traverse": <div>
           <strong>Traverse</strong>
