@@ -1,10 +1,16 @@
+import Image from 'next/image';
+import algo from './asset/algo.jpg';
 
 export default function Home() {
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 flex-1 p-6 max-w-4xl mx-auto">
+    <section className="flex-1 p-6 w-full ">
       <h1 className="text-3xl font-bold mb-4">Welcome to DSA Algo Visualization</h1>
       <p className="mb-8 text-gray-700">This website will allow you to visualize different data structure concepts and algorithms in action.</p>
+      
+      <div className="flex justify-center items-center h-auto w-auto pointer-events-none">
+        <Image height={350} src={algo} alt="Algorithm Visualization" />
+      </div>
 
       <section className="mb-6 text-justify">
         <h2 className="text-xl font-semibold text-blue-600">What is DSA?</h2>
@@ -57,7 +63,7 @@ export default function Home() {
         </p>
       </section>
 
-    </div>
+    </section>
 
   );
 }
