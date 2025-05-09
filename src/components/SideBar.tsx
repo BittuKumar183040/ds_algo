@@ -8,6 +8,7 @@ import { BiHome } from 'react-icons/bi'
 import { MdDataArray } from 'react-icons/md'
 import sideBarImage from './asset/side glow.png'
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu'
+import { PiPathFill } from 'react-icons/pi'
 
 const SideBar = () => {
   const [visible, setVisible ] = useState(false);
@@ -16,7 +17,6 @@ const SideBar = () => {
   const navLinkIcon = "size-4 transition-transform duration-300 group-hover:scale-105";
   const navLinkActive = "bg-gradient-to-r z-10 from-gray-800 via-gray-800 to-black text-white font-medium shadow-md";
   const sideBar = useRef<HTMLDivElement | null>(null)
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,13 +40,17 @@ const SideBar = () => {
       <h2 className="font-bold text-center text-xs">{visible ? "DS - ALGO" : "DSA"}</h2>
       <hr className=' opacity-40 my-4 ' />
       <nav className="space-y-2">
-        <Link href="/" className={`${navLink} ${pathname === "/" && navLinkActive} ${visible ? " py-2 px-8 pr-12": " py-4 pl-3"}`}>
+        <Link href="/" className={`${navLink} ${pathname === "/" && navLinkActive} ${visible ? " py-2 px-8 ": " py-4 pl-3"}`}>
           <BiHome className={navLinkIcon } />
           {visible && <span>Home</span>}
         </Link>
-        <Link href="/array" className={`${navLink} ${pathname === "/array" && navLinkActive} ${visible ? " py-2 px-8 pr-12": " py-4 pl-3"}`}>
+        <Link href="/array" className={`${navLink} ${pathname === "/array" && navLinkActive} ${visible ? " py-2 px-8 ": " py-4 pl-3"}`}>
           <MdDataArray className={navLinkIcon} />
           {visible && <span>Array</span>}
+        </Link>
+        <Link href="/path" className={`${navLink} ${pathname === "/path" && navLinkActive} ${visible ? " py-2 px-8 ": " py-4 pl-3"}`}>
+          <PiPathFill className={navLinkIcon} />
+          {visible && <span>Path Finding</span>}
         </Link>
       </nav>
 
