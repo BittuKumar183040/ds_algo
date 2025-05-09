@@ -18,7 +18,7 @@ export default function Page() {
   }, [])
 
   return (<section className="flex-1 p-6 w-full ">
-    <h1 className="text-2xl font-semibold mb-1">Array</h1>
+    <h1 className="text-4xl font-bold mb-4">Array</h1>
     <p>An array is a data structure that can hold a collection of items, typically of the same type, in a contiguous memory location.</p>
     <ul>
       <li>Arrays are zero-indexed.</li>
@@ -26,7 +26,6 @@ export default function Page() {
       <li>Common operations include traversal, insertion, deletion, and searching.</li>
     </ul>
     <HBar />
-    {/* <Tab /> */}
     <div className=" w-full flex justify-center mt-6 ">
       <div className="flex justify-center gap-1 text-sm select-none w-fit pl-5 bg-gray-100 p-2 rounded-md shadow ">
         <div className=" pr-10">

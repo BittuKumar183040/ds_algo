@@ -116,7 +116,7 @@ const Operations = ({ arrayList, setActiveIndex, setArrayList }: { arrayList: nu
   const findSmallest = (array: number[], from:number = 0, to:number = array.length, speed = EFFECT_SPEED + 100): Promise<{ index: number; value: number }> => {
     return new Promise((resolve) => {
       let i = from;
-      let j = from; // Start with 0, as index
+      let j = from;
       const n = to;
 
       const step = () => {
