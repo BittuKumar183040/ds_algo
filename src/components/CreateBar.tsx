@@ -4,9 +4,9 @@ const CreateBar = ({index, active, value}: {index:number, active:number[]|null, 
   const [isVisible, setIsVisible] = useState(false)
   return (<>
     <div onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)}
-      className={`w-1 relative  hover:bg-red-400 
-        ${active && active[0] === index  ? "bg-red-400" : "bg-black"}
-        ${active && active[1] === index  ? "bg-green-400" : "bg-black"}
+      className={`w-1 relative hover:bg-red-400 border border-gray-800 dark:border-gray-200
+        ${active && active[0] === index  ? "bg-red-400" : "bg-black dark:bg-white"}
+        ${active && active[1] === index  ? "bg-green-400" : "bg-black dark:bg-white"}
       `} 
       style={{ height: value }}>
       {isVisible && (
