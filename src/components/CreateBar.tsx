@@ -15,7 +15,6 @@ const CreateBar = ({index, active, value}: {index:number, active:number[]|null, 
           {value}
         </div>
       )}
-
     </div>
   </>
   )
