@@ -6,12 +6,12 @@ const page = () => {
   return (
     <div className="flex-1 p-6 w-full ">
       <h1 className="text-4xl font-bold mb-4">Path-Finding Visualizer</h1>
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="text-lg mb-8">
         Explore how various pathfinding algorithms work step by step. Starting with Dijkstra's Algorithm.
       </p>
       <section>
         <h2 className="text-2xl font-semibold mb-2">Dijkstra's Algorithm</h2>
-        <p className="text-gray-700 mb-4">
+        <p className=" mb-4">
           Dijkstra's Algorithm is a graph search algorithm that finds the shortest path between nodes in a weighted graph. 
           It guarantees the shortest path in graphs without negative weights.
         </p>

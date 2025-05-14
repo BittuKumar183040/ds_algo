@@ -27,7 +27,7 @@ export default function Page() {
     </ul>
     <HBar />
     <div className=" w-full flex justify-center mt-6 ">
-      <div className="flex justify-center gap-1 text-sm select-none w-fit pl-5 bg-gray-100 p-2 rounded-md shadow ">
+      <div className="flex justify-center gap-1 text-sm select-none w-fit pl-5 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow ">
         <div className=" pr-10">
           <div className={indexClass + " relative "}>
             <strong>Index</strong>
@@ -48,7 +48,7 @@ export default function Page() {
                   : activeIndex && activeIndex[1] === index ? { backgroundColor: "#0f0a" }
                   : undefined
               }
-              className={`border border-gray-800 text-black shadow-md size-8 rounded flex items-center justify-center text-center
+              className={`border border-gray-800 dark:border-gray-100 shadow-md size-8 rounded flex items-center justify-center text-center
                 `}
             >
               {value}
@@ -59,8 +59,8 @@ export default function Page() {
       </div>
     </div>
     <div className=" w-full flex justify-center my-2">
-      <p className=" px-4 py-1 bg-gray-100 opacity-80 rounded-sm">
-        <span>array.length = </span>
+      <p className=" px-4 py-1 opacity-80 rounded-sm">
+        <span>Array Length = </span>
         <span>{arrayList.length}</span>
       </p>
     </div>

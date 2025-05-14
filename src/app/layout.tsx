@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex`} >
       <section className=" flex w-full">
         <SideBar/>
-        <main className=" flex-1" style={{ boxShadow: "inset 2px 2px 15px rgba(0,0,0,0.1)", marginLeft:"3rem" }}>{children}</main>
+        <main className=" flex-1 dark:text-gray-100 dark:bg-black " style={{ boxShadow: "inset 2px 2px 15px rgba(0,0,0,0.1)" }}>{children}</main>
       </section>
       </body>
     </html>
