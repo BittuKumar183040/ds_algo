@@ -8,16 +8,23 @@ const THEME_LIGHT = 'light';
 const DarkModeBtn = () => {
   const [isDark, setIsDark] = useState(false);
 
-  useEffect(() => {
+   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
-    const prefersDark = storedTheme === THEME_DARK;
-    setIsDark(prefersDark);
+
+    if (storedTheme === THEME_DARK) {
+      setIsDark(true);
+    } else if (storedTheme === THEME_LIGHT) {
+      setIsDark(false);
+    } else {
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDark(systemPrefersDark);
+      localStorage.setItem('theme', systemPrefersDark ? THEME_DARK : THEME_LIGHT);
+    }
   }, []);
 
   useEffect(() => {
-    const theme = isDark ? THEME_DARK : THEME_LIGHT;
     document.documentElement.classList.toggle(THEME_DARK, isDark);
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', isDark ? THEME_DARK : THEME_LIGHT);
   }, [isDark]);
 
   const handleSwitch = () => setIsDark(prev => !prev);

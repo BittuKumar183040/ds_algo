@@ -36,7 +36,7 @@ const SideBar = () => {
 
   return (
     <aside ref={sideBar} className={` relative z-20 min-h-dvh h-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 py-4 pr-1 border-r border-gray-200 dark:border-gray-700 select-none
-      transition-all ${visible ? " w-40": "w-12"}`} 
+      transition-all ${visible ? " min-w-40": "w-12"}`} 
       >
       <Image className=' absolute left-0 top-0 h-full opacity-20 pointer-events-none ' src={sideBarImage} alt="" />
       <h2 className="font-bold text-center text-xs whitespace-nowrap">{visible ? "DS - ALGO" : "DSA"}</h2>
