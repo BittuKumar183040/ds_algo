@@ -13,7 +13,7 @@ import type { Node, Edge, NodeTypes } from '@xyflow/react';
 import CustomNode from '../customComponent';
 import { getRandomColor, gridNodePosition } from '../methods/common';
 
-const edgesDig = [[0, 1, 4], [0, 2, 8], [1, 4, 6], [2, 3, 2], [3, 4, 10]];
+const edgesDig = [[0, 1, 1], [0, 2, 1], [1, 4, 1], [2, 3, 1], [3, 4, 1]];
 
 const Visual = () => {
   const container = useRef<HTMLDivElement | null>(null);

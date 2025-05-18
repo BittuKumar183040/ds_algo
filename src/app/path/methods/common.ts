@@ -8,7 +8,7 @@ export const getRandomColor = () => {
 export const gridNodePosition = (index: number, rowLength = 3) => {
   const gapX = 150;
   const gapY = 100;
-  const x = (index % rowLength) * gapX + 50;
+  const x = (index % rowLength) * gapX + 150;
   const y = Math.floor(index / rowLength) * gapY + 50;
   return { x, y };
 };

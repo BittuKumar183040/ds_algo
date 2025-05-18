@@ -9,6 +9,7 @@ const CustomNode: React.FC<NodeProps> = ({ data, isConnectable = true }) => {
       {/* Left side handles */}
       <Handle
         type="target"
+        className=' p-1.5 '
         position={Position.Left}
         id="left-target"
         style={{ top: '30%' }}
@@ -16,6 +17,7 @@ const CustomNode: React.FC<NodeProps> = ({ data, isConnectable = true }) => {
       />
       <Handle
         type="source"
+        className=' p-1.5'
         position={Position.Left}
         id="left-source"
         style={{ top: '70%' }}
@@ -27,6 +29,7 @@ const CustomNode: React.FC<NodeProps> = ({ data, isConnectable = true }) => {
       {/* Right side handles */}
       <Handle
         type="target"
+        className=' size-4 p-1.5'
         position={Position.Right}
         id="right-target"
         style={{ top: '30%' }}
@@ -34,6 +37,7 @@ const CustomNode: React.FC<NodeProps> = ({ data, isConnectable = true }) => {
       />
       <Handle
         type="source"
+        className=' size-4 p-1.5'
         position={Position.Right}
         id="right-source"
         style={{ top: '70%' }}
