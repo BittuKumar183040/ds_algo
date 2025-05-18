@@ -1,17 +1,47 @@
-// components/CustomNode.tsx
 'use client';
 
 import React from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 
-const CustomNode: React.FC<NodeProps> = ({ data }) => {
+const CustomNode: React.FC<NodeProps> = ({ data, isConnectable = true }) => {
   return (
-    <div className="bg-white text-black px-2 py-1 rounded border shadow text-center text-sm">
-      <Handle type="target" position={Position.Left} id="left" />
-      <div>{(data as { label?: React.ReactNode }).label}</div>
-      <Handle type="source" position={Position.Right} id="right" />
+    <div className="bg-white text-black rounded border shadow text-sm relative w-16 h-16 flex items-center justify-center">
+      {/* Left side handles */}
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="left-target"
+        style={{ top: '30%' }}
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="left-source"
+        style={{ top: '70%' }}
+        isConnectable={isConnectable}
+      />
+
+      <div className="absolute">{(data as { label?: React.ReactNode }).label}</div>
+
+      {/* Right side handles */}
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="right-target"
+        style={{ top: '30%' }}
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="right-source"
+        style={{ top: '70%' }}
+        isConnectable={isConnectable}
+      />
     </div>
   );
 };
 
 export default CustomNode;
+
