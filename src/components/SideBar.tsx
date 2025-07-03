@@ -9,6 +9,7 @@ import { MdDataArray } from 'react-icons/md'
 import sideBarImage from './asset/side glow.png'
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu'
 import { PiPathFill } from 'react-icons/pi'
+import { BiText } from 'react-icons/bi'
 import DarkModeBtn from './DarkModeBtn'
 
 const SideBar = () => {
@@ -66,6 +67,10 @@ const SideBar = () => {
         <Link href="/path" className={`${navLink} ${pathname === "/path" && navLinkActive} ${visible ? " py-2 pl-4 ": " py-4 pl-3"}`}>
           <PiPathFill className={navLinkIcon} />
           {visible && <span>Path Finding</span>}
+        </Link>
+        <Link href="/string" className={`${navLink} ${pathname === "/string" && navLinkActive} ${visible ? " py-2 pl-4 ": " py-4 pl-3"}`}>
+          <BiText className={navLinkIcon} />
+          {visible && <span>String</span>}
         </Link>
       </nav>
 
