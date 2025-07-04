@@ -32,8 +32,8 @@ const Visual = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [steps, setSteps] = useState<DijkstraStep[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [startNode, setStartNode] = useState<string>('0');
-  const [targetNode, setTargetNode] = useState<string>('4');
+  const [startNode] = useState<string>('0');
+  const [targetNode] = useState<string>('4');
   const [shortestPath, setShortestPath] = useState<string[]>([]);
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -44,17 +44,7 @@ const Visual = () => {
 
   const nodeIds = ['0', '1', '2', '3', '4'];
 
-  useEffect(() => {
-    initializeGraph();
-  }, []);
-
-  useEffect(() => {
-    if (steps.length > 0) {
-      updateVisualization();
-    }
-  }, [currentStep, steps]);
-
-  const initializeGraph = () => {
+  const initializeGraph = useCallback(() => {
     // Initialize nodes
     const initialNodes = nodeIds.map((id, index) => ({
       id,
@@ -98,12 +88,12 @@ const Visual = () => {
     // Generate algorithm steps
     const visualizer = new DijkstraVisualizer(nodeIds, sampleEdges, startNode);
     const algorithmSteps = visualizer.generateSteps();
-    setSteps(algorithmSteps);
-    setShortestPath(visualizer.getShortestPath(targetNode));
-    setCurrentStep(0);
-  };
+         setSteps(algorithmSteps);
+     setShortestPath(visualizer.getShortestPath(targetNode));
+     setCurrentStep(0);
+   }, [startNode, targetNode]);
 
-  const updateVisualization = () => {
+  const updateVisualization = useCallback(() => {
     if (currentStep >= steps.length) return;
 
     const step = steps[currentStep];
@@ -151,7 +141,17 @@ const Visual = () => {
         };
       })
     );
-  };
+  }, [currentStep, steps, startNode, targetNode, shortestPath, setNodes, setEdges]);
+
+  useEffect(() => {
+    initializeGraph();
+  }, [initializeGraph]);
+
+  useEffect(() => {
+    if (steps.length > 0) {
+      updateVisualization();
+    }
+  }, [updateVisualization, steps]);
 
   const playAlgorithm = () => {
     if (isPlaying) return;

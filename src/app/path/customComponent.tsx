@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Handle, Position, NodeProps } from '@xyflow/react';
+import { Handle, Position } from '@xyflow/react';
 
 interface CustomNodeData {
   label: string;
@@ -20,7 +20,7 @@ interface CustomNodeProps {
 
 const CustomNode = ({ data, isConnectable = true }: CustomNodeProps) => {
   const getNodeStyles = () => {
-    let baseClasses = "rounded-full border-2 shadow-lg text-sm relative w-20 h-20 flex flex-col items-center justify-center transition-all duration-300 font-semibold";
+    const baseClasses = "rounded-full border-2 shadow-lg text-sm relative w-20 h-20 flex flex-col items-center justify-center transition-all duration-300 font-semibold";
     
     if (data.isStartNode) {
       return `${baseClasses} bg-green-500 text-white border-green-600 shadow-green-200`;
