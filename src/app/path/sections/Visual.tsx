@@ -216,76 +216,68 @@ const Visual = () => {
   const currentStepInfo = getCurrentStepInfo();
 
   return (
-    <section className="space-y-6">
+    <section>
       
       {/* Algorithm Controls */}
-      <div className="bg-white border rounded-lg p-4 shadow-sm">
-        <h3 className="text-lg font-semibold mb-3">Algorithm Controls</h3>
-        <div className="flex flex-wrap gap-2 mb-4">
-          <button
-            onClick={playAlgorithm}
-            disabled={isPlaying || currentStep >= steps.length - 1}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            ▶ Play
-          </button>
-          <button
-            onClick={pauseAlgorithm}
-            disabled={!isPlaying}
-            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            ⏸ Pause
-          </button>
-          <button
-            onClick={resetAlgorithm}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            ⏹ Reset
-          </button>
-          <button
-            onClick={stepBackward}
-            disabled={currentStep <= 0}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            ⏮ Step Back
-          </button>
-          <button
-            onClick={stepForward}
-            disabled={currentStep >= steps.length - 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            ⏭ Step Forward
-          </button>
-        </div>
-        
-        <div className="text-sm text-gray-600">
-          Step {currentStep + 1} of {steps.length}
-        </div>
+      <div className="flex flex-wrap gap-2 mb-4">
+        <button
+          onClick={playAlgorithm}
+          disabled={isPlaying || currentStep >= steps.length - 1}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          ▶ Play
+        </button>
+        <button
+          onClick={pauseAlgorithm}
+          disabled={!isPlaying}
+          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          ⏸ Pause
+        </button>
+        <button
+          onClick={resetAlgorithm}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          ⏹ Reset
+        </button>
+        <button
+          onClick={stepBackward}
+          disabled={currentStep <= 0}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          ⏮ Step Back
+        </button>
+        <button
+          onClick={stepForward}
+          disabled={currentStep >= steps.length - 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          ⏭ Step Forward
+        </button>
+      </div>
+      
+      <div className="text-sm text-gray-600 mb-4">
+        Step {currentStep + 1} of {steps.length}
       </div>
 
       {/* Current Step Information */}
       {currentStepInfo && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-semibold text-blue-900 mb-2">Current Step:</h4>
-          <p className="text-blue-800">{currentStepInfo.description}</p>
+        <div className="mb-4">
+          <p className="font-semibold mb-2">Current Step: {currentStepInfo.description}</p>
           
           {currentStepInfo.type !== 'INIT' && (
-            <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h5 className="font-medium text-blue-900">Distances:</h5>
-                <div className="text-sm text-blue-800">
-                  {Object.entries(currentStepInfo.distances).map(([node, distance]) => (
-                    <span key={node} className="mr-3">
-                      Node {node}: {distance === Infinity ? '∞' : distance}
-                    </span>
-                  ))}
-                </div>
+                <span className="font-medium">Distances: </span>
+                {Object.entries(currentStepInfo.distances).map(([node, distance]) => (
+                  <span key={node} className="mr-3">
+                    {node}:{distance === Infinity ? '∞' : distance}
+                  </span>
+                ))}
               </div>
               <div>
-                <h5 className="font-medium text-blue-900">Queue:</h5>
-                <div className="text-sm text-blue-800">
-                  [{currentStepInfo.queue.join(', ')}]
-                </div>
+                <span className="font-medium">Queue: </span>
+                [{currentStepInfo.queue.join(', ')}]
               </div>
             </div>
           )}
@@ -293,73 +285,36 @@ const Visual = () => {
       )}
 
       {/* Graph Visualization */}
-      <div
-        ref={container}
-        className="border rounded-lg shadow-sm"
-        style={{ width: '100%', height: '400px' }}
-      >
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          nodeTypes={nodeTypes}
-          fitView
+      <div className="w-full flex justify-center mb-4">
+        <div
+          ref={container}
+          className="bg-gray-100 dark:bg-gray-800 rounded-md shadow"
+          style={{ width: '100%', height: '400px' }}
         >
-          <Controls />
-          <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-        </ReactFlow>
-      </div>
-
-      {/* Legend */}
-      <div className="bg-gray-50 border rounded-lg p-4">
-        <h4 className="font-semibold mb-3">Legend:</h4>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-            <span>Start Node</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-            <span>Target Node</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
-            <span>Current Node</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-            <span>Visited Node</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-yellow-400 rounded-full"></div>
-            <span>Shortest Path</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded-full"></div>
-            <span>Unvisited Node</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-1 bg-blue-500"></div>
-            <span>Active Edge</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-1 bg-yellow-400"></div>
-            <span>Shortest Path</span>
-          </div>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            fitView
+          >
+            <Controls />
+            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+          </ReactFlow>
         </div>
       </div>
 
       {/* Algorithm Summary */}
       {currentStep === steps.length - 1 && shortestPath.length > 0 && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <h4 className="font-semibold text-green-900 mb-2">🎉 Algorithm Complete!</h4>
-          <p className="text-green-800">
+        <div className="text-center py-4">
+          <p className="font-semibold text-green-600 mb-2">🎉 Algorithm Complete!</p>
+          <p>
             Shortest path from {startNode} to {targetNode}: {' '}
             <strong>{shortestPath.join(' → ')}</strong>
           </p>
-          <p className="text-green-800">
+          <p>
             Total distance: <strong>{steps[currentStep].distances[targetNode]}</strong>
           </p>
         </div>
